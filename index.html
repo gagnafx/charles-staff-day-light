@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charles Staff Day Light</title>
+    <style>
+        :root { --gold: #c5a059; --bg: #0a0a0a; --text: #f4f4f4; }
+        body { margin: 0; font-family: sans-serif; background-color: var(--bg); color: var(--text); }
+        
+        /* Disposition en-tête */
+        .header-section { text-align: center; padding: 30px; }
+        .logo-display { width: 150px; height: 150px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; display: block; margin: 0 auto; }
+        h1 { margin: 15px 0 0 0; font-size: 24px; color: var(--gold); }
+        hr { border: 0; border-top: 2px solid var(--gold); margin: 30px auto; width: 80%; }
+        
+        .info-section { padding: 20px; text-align: center; line-height: 1.6; }
+        .wa-btn { display: inline-block; padding: 12px 25px; background: #25d366; color: white; text-decoration: none; border-radius: 50px; margin-top: 15px; font-weight: bold; }
+        
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
+        .item-container { position: relative; }
+        .work-item { width: 100%; height: 250px; object-fit: cover; border: 2px solid var(--gold); display: block; }
+        .admin-btn { display: none; width: 100%; padding: 10px; background: var(--gold); border: none; color: white; cursor: pointer; margin-top: 5px; }
+        .admin-panel { display: none; text-align: center; padding: 20px; background: #1a1a1a; margin-top: 20px; }
+        #adminTriggerImg { cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="header-section">
+    <img src="1001855070.jpg" alt="Logo" class="logo-display" id="logo">
+    <h1>CHARLES STAFF DAY LIGHT</h1>
+    <hr>
+</div>
+
+<section class="info-section">
+    <p>Sublimez votre intérieur avec l'excellence du fait main !<br>
+    Spécialité : Tous travaux de staff (plafond moderne, décor...).<br>
+    C.E.G CITÉ BAGUIDA RAIL</p>
+    <a href="https://wa.me/22890388367" class="wa-btn">Contacter WhatsApp : +228 90 38 83 67</a>
+</section>
+
+<div class="gallery" id="gallery">
+    <div class="item-container"><video class="work-item" id="vid0" controls><source src="video1.mp4" type="video/mp4"></video><button class="admin-btn" onclick="triggerUpload('vid0')">Remplacer Vidéo 1</button></div>
+    <div class="item-container"><video class="work-item" id="vid1" controls><source src="video2.mp4" type="video/mp4"></video><button class="admin-btn" onclick="triggerUpload('vid1')">Remplacer Vidéo 2</button></div>
+    <div class="item-container"><img src="1001855077.jpg" class="work-item" id="adminTriggerImg" data-clicks="0"><button class="admin-btn" onclick="triggerUpload('adminTriggerImg')">Remplacer Image 1</button></div>
+    <div class="item-container"><img src="1001855079.jpg" class="work-item" id="img1"><button class="admin-btn" onclick="triggerUpload('img1')">Remplacer Image 2</button></div>
+    <div class="item-container"><img src="1001855081.jpg" class="work-item" id="img2"><button class="admin-btn" onclick="triggerUpload('img2')">Remplacer Image 3</button></div>
+    <div class="item-container"><img src="1001855083.jpg" class="work-item" id="img3"><button class="admin-btn" onclick="triggerUpload('img3')">Remplacer Image 4</button></div>
+    <div class="item-container"><img src="1001855085.jpg" class="work-item" id="img4"><button class="admin-btn" onclick="triggerUpload('img4')">Remplacer Image 5</button></div>
+    <div class="item-container"><img src="1001855087.jpg" class="work-item" id="img5"><button class="admin-btn" onclick="triggerUpload('img5')">Remplacer Image 6</button></div>
+    <div class="item-container"><img src="1001855089.jpg" class="work-item" id="img6"><button class="admin-btn" onclick="triggerUpload('img6')">Remplacer Image 7</button></div>
+    <div class="item-container"><img src="1001855091.jpg" class="work-item" id="img7"><button class="admin-btn" onclick="triggerUpload('img7')">Remplacer Image 8</button></div>
+    <div class="item-container"><img src="1001855093.jpg" class="work-item" id="img8"><button class="admin-btn" onclick="triggerUpload('img8')">Remplacer Image 9</button></div>
+    <div class="item-container"><img src="1001855095.jpg" class="work-item" id="img9"><button class="admin-btn" onclick="triggerUpload('img9')">Remplacer Image 10</button></div>
+</div>
+
+<div class="admin-panel" id="adminPanel">
+    <h3>Mode Admin</h3>
+    <input type="password" id="newCode" placeholder="Nouveau code 4 chiffres">
+    <button onclick="saveNewCode()">Sauvegarder le code</button>
+    <div style="margin-top:20px;">
+        <button onclick="triggerUpload('logo')" style="padding:10px; background:#25d366; border:none; color:white; cursor:pointer;">Changer le Logo</button>
+    </div>
+</div>
+
+<input type="file" id="fileInput" style="display:none" accept="image/*,video/*">
+
+<script>
+    let currentTargetId = null;
+
+    document.getElementById('adminTriggerImg').onclick = function() {
+        let clicks = parseInt(this.getAttribute('data-clicks')) + 1;
+        this.setAttribute('data-clicks', clicks);
+        if (clicks === 4) {
+            let pass = prompt("Code admin :");
+            if (pass === (localStorage.getItem('adminCode') || '1234')) {
+                document.querySelectorAll('.admin-btn').forEach(btn => btn.style.display = 'block');
+                document.getElementById('adminPanel').style.display = 'block';
+            } else { alert("Code incorrect."); }
+            this.setAttribute('data-clicks', 0);
+        }
+    };
+
+    function saveNewCode() {
+        let code = document.getElementById('newCode').value;
+        if (code.length === 4) { localStorage.setItem('adminCode', code); alert("Code enregistré !"); }
+        else { alert("Le code doit faire 4 chiffres."); }
+    }
+
+    function triggerUpload(id) { currentTargetId = id; document.getElementById('fileInput').click(); }
+
+    document.getElementById('fileInput').onchange = function(e) {
+        if (this.files && this.files[0]) {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                let el = document.getElementById(currentTargetId);
+                if (el.tagName === 'VIDEO') { el.querySelector('source').src = e.target.result; el.load(); }
+                else { el.src = e.target.result; }
+                localStorage.setItem('saved_' + currentTargetId, e.target.result);
+                alert("Mise à jour réussie !");
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
+    };
+
+    window.onload = () => {
+        ['logo', 'vid0', 'vid1', 'adminTriggerImg', 'img1', 'img2', 'img3', 'img4', 'img5', 'img6', 'img7', 'img8', 'img9'].forEach(id => {
+            let saved = localStorage.getItem('saved_' + id);
+            if(saved) {
+                let el = document.getElementById(id);
+                if (el) {
+                    if (el.tagName === 'VIDEO') { el.querySelector('source').src = saved; el.load(); }
+                    else { el.src = saved; }
+                }
+            }
+        });
+    };
+</script>
+</body>
+</html>
