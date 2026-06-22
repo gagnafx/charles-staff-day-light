@@ -13,18 +13,21 @@
         
         .title-section { text-align: center; margin: 15px 0; }
         
-        /* Style de la description issue de 1001855061.jpg */
         .description-box { padding: 20px; text-align: center; line-height: 1.6; color: #ddd; }
+        
+        .wa-btn { display: block; width: 80%; margin: 20px auto; padding: 15px; background-color: #25d366; color: white; text-align: center; text-decoration: none; border-radius: 10px; font-weight: bold; }
         
         .divider { border-top: 2px solid var(--gold); margin: 20px auto; width: 80%; }
         
-        /* Bouton WhatsApp */
-        .wa-btn { display: block; width: 80%; margin: 20px auto; padding: 15px; background-color: #25d366; color: white; text-align: center; text-decoration: none; border-radius: 10px; font-weight: bold; }
-        
         .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
-        .work-item { width: 100%; height: 250px; object-fit: cover; border: 2px solid var(--gold); display: block; }
+        .work-item { width: 100%; height: 250px; object-fit: cover; border: 2px solid var(--gold); display: block; cursor: pointer; }
         .item-container { border: 1px solid #333; padding: 10px; background: #111; text-align: center; }
         .desc-text { margin-top: 10px; color: var(--gold); font-style: italic; }
+
+        /* Modal Plein écran */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+        .modal-content { max-width: 90%; max-height: 80%; border: 2px solid var(--gold); }
+        .close-btn { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -37,7 +40,6 @@
     <h1>CHARLES STAFF DAY LIGHT</h1>
 </div>
 
-<!-- Description complète -->
 <div class="description-box">
     <p>Sublimez votre intérieur avec l'excellence du fait main ! Besoin de donner du cachet, de la luminosité et de l'élégance à vos pièces ?<br>
     L'atelier du fait main ✋ est à votre disposition pour donner vie à vos projets. Notre spécialité : Tous travaux de staff (plafond modernes, décor,...).<br>
@@ -46,14 +48,33 @@
     <strong>CHARLES STAFF: L'art du staff qui illumine vos espaces</strong></p>
 </div>
 
-<!-- Bouton WhatsApp -->
 <a href="https://wa.me/22890388367" class="wa-btn">Contactez-nous sur WhatsApp</a>
 
 <div class="divider"></div>
 
 <div class="gallery" id="gallery"></div>
 
+<!-- Structure de la modale -->
+<div id="myModal" class="modal" onclick="closeModal()">
+    <span class="close-btn">&times;</span>
+    <div id="modalContent" onclick="event.stopPropagation()"></div>
+</div>
+
 <script>
+    function openModal(src, type) {
+        let modal = document.getElementById("myModal");
+        let content = document.getElementById("modalContent");
+        content.innerHTML = type.includes('video') ? 
+            `<video controls autoplay class="modal-content" src="${src}"></video>` : 
+            `<img class="modal-content" src="${src}">`;
+        modal.style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+        document.getElementById("modalContent").innerHTML = "";
+    }
+
     function renderGallery() {
         const galleryFiles = [
             { src: 'video1.mp4', type: 'video/mp4', desc: 'Vidéo 1' },
@@ -76,9 +97,11 @@
         galleryFiles.forEach((item) => {
             let div = document.createElement('div');
             div.className = 'item-container';
+            
             let media = (item.type.includes('video')) ? 
-                `<video class="work-item" controls src="${item.src}"></video>` : 
-                `<img class="work-item" src="${item.src}">`;
+                `<video class="work-item" src="${item.src}" onclick="openModal('${item.src}', '${item.type}')"></video>` : 
+                `<img class="work-item" src="${item.src}" onclick="openModal('${item.src}', '${item.type}')">`;
+            
             div.innerHTML = media + `<p class="desc-text">${item.desc}</p>`;
             container.appendChild(div);
         });
@@ -88,3 +111,4 @@
 </script>
 </body>
 </html>
+
