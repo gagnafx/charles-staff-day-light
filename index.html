@@ -6,21 +6,50 @@
     <title>Charles Staff Day Light</title>
     <style>
         :root { --gold: #c5a059; --bg: #0a0a0a; --text: #f4f4f4; }
-        body { margin: 0; font-family: sans-serif; background-color: var(--bg); color: var(--text); }
-        header { text-align: center; padding: 20px; border-bottom: 2px solid var(--gold); }
-        .logo-display { width: 200px; height: 200px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; display: block; margin: 0 auto; }
+        body { margin: 0; font-family: sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 50px; }
+        
+        .logo-section { margin-top: 20px; text-align: center; }
+        .logo-display { width: 200px; height: 200px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; }
+        
+        .title-section { text-align: center; margin: 15px 0; }
+        
+        /* Style de la description issue de 1001855061.jpg */
+        .description-box { padding: 20px; text-align: center; line-height: 1.6; color: #ddd; }
+        
+        .divider { border-top: 2px solid var(--gold); margin: 20px auto; width: 80%; }
+        
+        /* Bouton WhatsApp */
+        .wa-btn { display: block; width: 80%; margin: 20px auto; padding: 15px; background-color: #25d366; color: white; text-align: center; text-decoration: none; border-radius: 10px; font-weight: bold; }
+        
         .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
         .work-item { width: 100%; height: 250px; object-fit: cover; border: 2px solid var(--gold); display: block; }
         .item-container { border: 1px solid #333; padding: 10px; background: #111; text-align: center; }
+        .desc-text { margin-top: 10px; color: var(--gold); font-style: italic; }
     </style>
 </head>
 <body>
 
-<header><h1>CHARLES STAFF DAY LIGHT</h1></header>
-
-<div style="text-align: center; margin-top: 20px;">
+<div class="logo-section">
     <img src="1001855070.jpg" alt="Logo" class="logo-display">
 </div>
+
+<div class="title-section">
+    <h1>CHARLES STAFF DAY LIGHT</h1>
+</div>
+
+<!-- Description complète -->
+<div class="description-box">
+    <p>Sublimez votre intérieur avec l'excellence du fait main ! Besoin de donner du cachet, de la luminosité et de l'élégance à vos pièces ?<br>
+    L'atelier du fait main ✋ est à votre disposition pour donner vie à vos projets. Notre spécialité : Tous travaux de staff (plafond modernes, décor,...).<br>
+    Un travail soigné, sur-mesure et d'une finition irréprochable.<br>
+    Où nous trouver ? C.E.G CITÉ BAGUIDA RAIL<br>
+    <strong>CHARLES STAFF: L'art du staff qui illumine vos espaces</strong></p>
+</div>
+
+<!-- Bouton WhatsApp -->
+<a href="https://wa.me/22890388367" class="wa-btn">Contactez-nous sur WhatsApp</a>
+
+<div class="divider"></div>
 
 <div class="gallery" id="gallery"></div>
 
@@ -42,12 +71,15 @@
         ];
 
         let container = document.getElementById('gallery');
+        container.innerHTML = '';
+        
         galleryFiles.forEach((item) => {
             let div = document.createElement('div');
             div.className = 'item-container';
-            div.innerHTML = (item.type.includes('video') ? 
+            let media = (item.type.includes('video')) ? 
                 `<video class="work-item" controls src="${item.src}"></video>` : 
-                `<img class="work-item" src="${item.src}">`) + `<p>${item.desc}</p>`;
+                `<img class="work-item" src="${item.src}">`;
+            div.innerHTML = media + `<p class="desc-text">${item.desc}</p>`;
             container.appendChild(div);
         });
     }
